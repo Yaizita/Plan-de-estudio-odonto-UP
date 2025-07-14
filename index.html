@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Malla de Odontología</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plan de estudio - Odontología UP</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -15,27 +15,52 @@
     h1 {
       text-align: center;
       color: #4a4a4a;
+      margin-bottom: 30px;
     }
 
     .semestre {
-      background-color: #fff;
+      background-color: #ffffff;
       border-left: 6px solid #f3d1dc;
       margin: 20px auto;
       padding: 15px 20px;
       border-radius: 12px;
-      max-width: 800px;
+      max-width: 900px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
-    .semestre h2 {
-      margin-top: 0;
+    .header-semestre {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .header-semestre h2 {
+      margin: 0;
       color: #8c8c8c;
+    }
+
+    .indice {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .indice input {
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 60px;
     }
 
     .materias {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
+      margin-top: 10px;
     }
 
     .materia {
@@ -60,51 +85,130 @@
 </head>
 <body>
 
-  <h1>📚 Malla de Odontología</h1>
+  <h1>Plan de estudio – Odontología UP</h1>
 
-  <!-- Aquí van los semestres, por ejemplo: -->
-  <div class="semestre">
-    <h2>Semestre I</h2>
-    <div class="materias">
-      <div class="materia">Biología Celular y Molecular</div>
-      <div class="materia">Biofísica</div>
-      <div class="materia">Química Orgánica</div>
-      <div class="materia">Sociología</div>
-      <div class="materia">Informática y Redes de Aprendizaje</div>
-      <div class="materia">Fundamentos para la Odontología</div>
-      <div class="materia">Historia de Panamá y EE.UU. I</div>
-    </div>
-  </div>
-
-  <div class="semestre">
-    <h2>Semestre II</h2>
-    <div class="materias">
-      <div class="materia">Histología General</div>
-      <div class="materia">Bioquímica</div>
-      <div class="materia">Microbiología Bucal</div>
-      <div class="materia">Anatomía General</div>
-      <div class="materia">Bioestadística</div>
-      <div class="materia">Psicología Aplicada</div>
-      <div class="materia">Historia de Panamá y EE.UU. II</div>
-    </div>
-  </div>
-
-  <!-- Puedes seguir este mismo formato para los semestres III al X y los 3 veranos -->
+  <!-- Semestres -->
+  <div id="contenedor"></div>
 
   <script>
-    // Guardar el estado de tachado
-    document.querySelectorAll('.materia').forEach(materia => {
-      const key = materia.innerText;
-      if (localStorage.getItem(key) === 'true') {
-        materia.classList.add('tachada');
-      }
+    // Materias por semestre/verano
+    const plan = {
+      "Semestre I": [
+        "Biología Celular y Molecular", "Biofísica", "Química Orgánica", "Sociología", 
+        "Informática y Redes de Aprendizaje", "Fundamentos para la Odontología", 
+        "Historia de Panamá y EE.UU. I"
+      ],
+      "Semestre II": [
+        "Histología General", "Bioquímica", "Microbiología Bucal", "Anatomía General",
+        "Bioestadística", "Psicología Aplicada", "Historia de Panamá y EE.UU. II"
+      ],
+      "Primer Verano": [
+        "Arte y Modelado para la Odontología", "Preparación Física", 
+        "Lenguaje y Comunicación en Español", "Metodología de la Investigación"
+      ],
+      "Semestre III": [
+        "Anatomía Topográfica", "Técnica Radiográfica Odontológica", "Histología Bucal",
+        "Anatomía Dental", "Materiales Dentales", "Fisiología", 
+        "Operatoria Dental – Cariología", "Epidemiología Bucal"
+      ],
+      "Semestre IV": [
+        "Anestesia Odontológica", "Operatoria Dental I", "Interpretación Radiográfica",
+        "Diagnóstico Bucal I", "Patología General", "Bioseguridad", 
+        "Oclusión", "Salud Escolar"
+      ],
+      "Segundo Verano": [
+        "Historia de Panamá en el Mundo Global", "Lenguaje y Comunicación en Inglés", 
+        "Sociedad, Medio Ambiente y Desarrollo Sostenible"
+      ],
+      "Semestre V": [
+        "Prótesis Total", "Farmacología", "Patología Bucal", "Periodoncia I", 
+        "Ortodoncia C+D", "Operatoria Dental II", "Diagnóstico Bucal II", 
+        "Prótesis Parcial Fija"
+      ],
+      "Semestre VI": [
+        "Operatoria Dental III", "Ortodoncia", "Prótesis Parcial Removible", 
+        "Exodoncia", "Periodoncia II", "Odontología Infantil", "Endodoncia"
+      ],
+      "Tercer Verano": [
+        "Introducción a la Clínica Integrada", "Geografía de Panamá"
+      ],
+      "Semestre VII": [
+        "Clínica Integrada I", "Odontología Integrada del Niño y Adolescente I",
+        "Ciencias Quirúrgicas I", "Medicina Bucal I", "Terapéutica Odontológica", 
+        "Prótesis Fija y Oclusión", "Salud Familiar"
+      ],
+      "Semestre VIII": [
+        "Clínica Integrada II", "Odontología Integrada del Niño y Adolescente II", 
+        "Ciencias Quirúrgicas II", "Medicina Bucal II", "Diagnóstico y Plan de Tratamiento",
+        "Investigación en Salud Bucal", "Administración de Servicios Odontológicos I"
+      ],
+      "Semestre IX": [
+        "Clínica Integrada III", "Nutrición", "Restauradora Integrada", 
+        "Programa Docencia – Servicio I", "Administración de Servicios Odontológicos II"
+      ],
+      "Semestre X": [
+        "Clínica Integrada IV", "Programa Docencia – Servicio II",
+        "Administración de Servicios Odontológicos III", "Odontología Legal y Forense"
+      ]
+    };
 
-      materia.addEventListener('click', () => {
-        materia.classList.toggle('tachada');
-        localStorage.setItem(key, materia.classList.contains('tachada'));
+    const contenedor = document.getElementById("contenedor");
+
+    Object.entries(plan).forEach(([semestre, materias]) => {
+      const bloque = document.createElement("div");
+      bloque.className = "semestre";
+
+      const header = document.createElement("div");
+      header.className = "header-semestre";
+
+      const titulo = document.createElement("h2");
+      titulo.textContent = semestre;
+
+      const indice = document.createElement("div");
+      indice.className = "indice";
+      indice.innerHTML = `
+        Índice: 
+        <input type="text" id="indice-${semestre}" placeholder="0.00" />
+      `;
+
+      // Guardar índice
+      setTimeout(() => {
+        const input = document.getElementById(`indice-${semestre}`);
+        const key = `indice-${semestre}`;
+        input.value = localStorage.getItem(key) || "";
+        input.addEventListener("input", () => {
+          localStorage.setItem(key, input.value);
+        });
+      }, 0);
+
+      header.appendChild(titulo);
+      header.appendChild(indice);
+      bloque.appendChild(header);
+
+      const materiasDiv = document.createElement("div");
+      materiasDiv.className = "materias";
+
+      materias.forEach(nombre => {
+        const item = document.createElement("div");
+        item.className = "materia";
+        item.textContent = nombre;
+
+        const key = `materia-${nombre}`;
+        if (localStorage.getItem(key) === "true") {
+          item.classList.add("tachada");
+        }
+
+        item.addEventListener("click", () => {
+          item.classList.toggle("tachada");
+          localStorage.setItem(key, item.classList.contains("tachada"));
+        });
+
+        materiasDiv.appendChild(item);
       });
+
+      bloque.appendChild(materiasDiv);
+      contenedor.appendChild(bloque);
     });
   </script>
-
 </body>
 </html>
