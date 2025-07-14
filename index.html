@@ -2,9 +2,109 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Mi Malla de Odontología</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malla de Odontología</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f7f3;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4a4a4a;
+    }
+
+    .semestre {
+      background-color: #fff;
+      border-left: 6px solid #f3d1dc;
+      margin: 20px auto;
+      padding: 15px 20px;
+      border-radius: 12px;
+      max-width: 800px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .semestre h2 {
+      margin-top: 0;
+      color: #8c8c8c;
+    }
+
+    .materias {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .materia {
+      background-color: #f0eee9;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      color: #333;
+      transition: background 0.2s ease;
+    }
+
+    .materia:hover {
+      background-color: #e5e3dc;
+    }
+
+    .materia.tachada {
+      text-decoration: line-through;
+      color: #999;
+      background-color: #f3f3f3;
+    }
+  </style>
 </head>
 <body>
-  <h1>¡Hola! Aquí estará mi malla 😊</h1>
+
+  <h1>📚 Malla de Odontología</h1>
+
+  <!-- Aquí van los semestres, por ejemplo: -->
+  <div class="semestre">
+    <h2>Semestre I</h2>
+    <div class="materias">
+      <div class="materia">Biología Celular y Molecular</div>
+      <div class="materia">Biofísica</div>
+      <div class="materia">Química Orgánica</div>
+      <div class="materia">Sociología</div>
+      <div class="materia">Informática y Redes de Aprendizaje</div>
+      <div class="materia">Fundamentos para la Odontología</div>
+      <div class="materia">Historia de Panamá y EE.UU. I</div>
+    </div>
+  </div>
+
+  <div class="semestre">
+    <h2>Semestre II</h2>
+    <div class="materias">
+      <div class="materia">Histología General</div>
+      <div class="materia">Bioquímica</div>
+      <div class="materia">Microbiología Bucal</div>
+      <div class="materia">Anatomía General</div>
+      <div class="materia">Bioestadística</div>
+      <div class="materia">Psicología Aplicada</div>
+      <div class="materia">Historia de Panamá y EE.UU. II</div>
+    </div>
+  </div>
+
+  <!-- Puedes seguir este mismo formato para los semestres III al X y los 3 veranos -->
+
+  <script>
+    // Guardar el estado de tachado
+    document.querySelectorAll('.materia').forEach(materia => {
+      const key = materia.innerText;
+      if (localStorage.getItem(key) === 'true') {
+        materia.classList.add('tachada');
+      }
+
+      materia.addEventListener('click', () => {
+        materia.classList.toggle('tachada');
+        localStorage.setItem(key, materia.classList.contains('tachada'));
+      });
+    });
+  </script>
+
 </body>
 </html>
